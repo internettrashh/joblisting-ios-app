@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   userName: {
-    fontFamily: FONT.regular,
+    fontWeight: "normal",
     fontSize: SIZES.large,
     color: COLORS.secondary,
   },

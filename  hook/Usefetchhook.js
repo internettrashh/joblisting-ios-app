@@ -1,11 +1,47 @@
-import { View, Text } from 'react-native'
-import * as React from 'react';
-const Usefetchhook = () => {
-  return (
-    <View>
-      <Text>Usefetchhook</Text>
-    </View>
-  )
-}
+import { useState, useEffect } from "react";
+import axios from "axios";
 
-export default Usefetchhook
+const useFetch = (endpoint, query) => {
+  const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const options = {
+    method: "GET",
+    url: `https://jsearch.p.rapidapi.com/${endpoint}`,
+    headers: {
+      "X-RapidAPI-Key": '13f861d3a5msh418527ad9290b62p1a74e5jsne12f34f04f45',
+      "X-RapidAPI-Host": "jsearch.p.rapidapi.com",
+    },
+    params: { ...query },
+  };
+
+  const fetchData = async () => {
+    setIsLoading(true);
+
+    try {
+      const response = await axios.request(options);
+
+      setData(response.data.data);
+      setIsLoading(false);
+    } catch (error) {
+      setError(error);
+      console.log(error)
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const refetch = () => {
+    setIsLoading(true);
+    fetchData();
+  };
+
+  return { data, isLoading, error, refetch };
+};
+
+export default useFetch;
